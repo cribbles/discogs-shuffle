@@ -1,0 +1,4 @@
+_build/
+discogs.db
+*.swp
+
