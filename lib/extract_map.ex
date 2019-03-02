@@ -1,15 +1,6 @@
 defmodule Discogs.ExtractReleases do
-  def extract_from_json(map) do
-    {:ok, body} = map
-    next_url = get_in(body, ["pagination", "urls", "next"])
-    releases = get_releases(body)
-    {next_url, releases}
-  end
-
-  defp get_releases(body) do
-    body
-    |> get_in(["releases"])
-    |> Enum.map(&(extract_release_fields(&1)))
+  def extract_from_json({:ok, releases}) do
+    {:ok, Enum.map(releases, &extract_release_fields/1)}
   end
 
   defp extract_release_fields(release) do
@@ -40,4 +31,3 @@ defmodule Discogs.ExtractReleases do
     Enum.map(map, &(Map.take(&1, values)))
   end
 end
-

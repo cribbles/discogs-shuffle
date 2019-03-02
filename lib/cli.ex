@@ -35,9 +35,8 @@ defmodule Discogs.CLI do
 
   def sync(username) do
     username
-    |> Discogs.JSONFetch.fetch
+    |> Discogs.JSONFetch.fetch_releases_by_username
     |> Discogs.ExtractReleases.extract_from_json
     |> Discogs.SyncReleases.sync
   end
 end
-
