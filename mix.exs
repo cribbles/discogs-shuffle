@@ -7,28 +7,28 @@ defmodule Discogs.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      escript: [main_module: Discogs.CLI],
+      escript: [main_module: Discogs.Repo],
       deps: deps()
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [
         :logger,
         :poison,
-        :sqlitex
-      ]
+        :sqlite_ecto2,
+        :ecto
+      ],
+      mod: {Discogs.Application, []}
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:httpoison, "~> 1.5"},
-      {:poison, "~> 4.0"},
-      {:sqlitex, "~> 1.5"},
+      {:poison, "~> 3.0"},
+      {:sqlite_ecto2, "~> 2.2"},
     ]
   end
 end

@@ -1,5 +1,13 @@
-defmodule Discogs.ExtractReleases do
-  def extract_from_json({:ok, releases}) do
+defmodule Discogs.ExtractModels do
+  # use Ecto.Schema
+  # alias Discogs.User
+  # alias Discogs.Artist
+  # alias Discogs.Release
+  # alias Discogs.Record
+  # alias Discogs.ArtistRelease
+  # alias Discogs.UserRelease
+
+  def extract_from_json({:ok, _, releases}) do
     {:ok, Enum.map(releases, &extract_release_fields/1)}
   end
 

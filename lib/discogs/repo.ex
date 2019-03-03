@@ -1,4 +1,6 @@
-defmodule Discogs.CLI do
+defmodule Discogs.Repo do
+  use Ecto.Repo, otp_app: :discogs, adapter: Sqlite.Ecto2
+
   def main(args) do
     args
     |> parse_args
@@ -35,8 +37,9 @@ defmodule Discogs.CLI do
 
   def sync(username) do
     username
-    |> Discogs.JSONFetch.fetch_releases_by_username
-    |> Discogs.ExtractReleases.extract_from_json
-    |> Discogs.SyncReleases.sync
+    |> Discogs.User.get_or_create_by_name
+    |> Discogs.JSONFetch.fetch_releases_by_user
+    |> Discogs.ExtractModels.extract_from_json
+    |> Discogs.SyncModels.sync
   end
 end

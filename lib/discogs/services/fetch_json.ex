@@ -1,6 +1,12 @@
 defmodule Discogs.JSONFetch do
+  alias Discogs.User
   @discogs_http_timeout_ms 15_000
   @discogs_pagination_limit 500
+
+  def fetch_releases_by_user({:ok, user}) do
+    {:ok, releases} = fetch_releases_by_username(user.name)
+    {:ok, user, releases}
+  end
 
   def fetch_releases_by_username(username) do
     username
