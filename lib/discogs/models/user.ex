@@ -13,7 +13,7 @@ defmodule Discogs.User do
   end
 
   def get_or_create_by_name(username) do
-    get_by_name(username) || create_by_name(username)
+    {:ok, get_by_name(username) || create_by_name(username)}
   end
 
   def get_by_name(username) do
@@ -21,11 +21,11 @@ defmodule Discogs.User do
       where: u.name == ^username,
       select: u,
       limit: 1
-    {:ok, Repo.one(query)}
+    Repo.one(query)
   end
 
   def create_by_name(username) do
-    %User{name: username}
-    |> Repo.insert
+    {:ok, user} = %User{name: username} |> Repo.insert
+    user
   end
 end
