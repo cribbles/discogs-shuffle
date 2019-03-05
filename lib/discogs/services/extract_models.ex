@@ -1,8 +1,10 @@
 defmodule Discogs.ExtractModels do
-  import Discogs.Helpers, only: [pick: 2]
+  alias Discogs.Record
+  alias Discogs.Release
 
   def extract_release_models({:ok, user, releases}) do
-    {:ok, user, releases, %{releases: get_release_models(releases)}}
+    models = %{releases: get_release_models(releases)}
+    {:ok, user, releases, models}
   end
 
   def extract_relationship_models({:ok, user, releases, models}) do
@@ -11,7 +13,13 @@ defmodule Discogs.ExtractModels do
   end
 
   defp get_release_models(releases) do
-    pick(releases, [:discogs_id, :name, :records])
+    Enum.map(releases, &get_release_record_tuple/1)
+  end
+
+  defp get_release_record_tuple(release) do
+    release_model = struct(Release, Map.take(release, [:discogs_id, :name]))
+    record_models = Enum.map(release.records, &struct(Record, &1))
+    {release_model, record_models}
   end
 
   defp get_relationship_models(user, releases) do

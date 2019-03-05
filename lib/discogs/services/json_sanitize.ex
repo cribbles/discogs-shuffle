@@ -1,18 +1,23 @@
 defmodule Discogs.JSONSanitize do
-  import Discogs.Helpers, only: [pick: 2]
-
   def extract_from_json({:ok, user, releases}) do
     {:ok, user, extract_release_fields(releases)}
   end
 
   defp extract_release_fields(releases) when is_list(releases) do
-    Enum.map(releases, &extract_release_fields/1)
+    Enum.reduce(releases, %{}, fn (release, releases) ->
+      id = get_in(release, ["basic_information", "id"])
+      case releases[id] do
+        r when is_map(r) -> releases
+        _ -> Map.put(releases, id, extract_release_fields(release, id))
+      end
+    end)
+    |> Map.values
   end
 
-  defp extract_release_fields(release) do
+  defp extract_release_fields(release, discogs_id) do
     %{
       artists: get_artists(release),
-      discogs_id: get_in(release, ["basic_information", "id"]),
+      discogs_id: discogs_id,
       name: get_in(release, ["basic_information", "title"]),
       records: get_records(release),
     }
@@ -41,5 +46,9 @@ defmodule Discogs.JSONSanitize do
 
   defp generate_records(disc_count) do
     for disc_number <- 1..disc_count, do: %{disc_number: disc_number}
+  end
+
+  defp pick(map, values) do
+    Enum.map(map, &(Map.take(&1, values)))
   end
 end
