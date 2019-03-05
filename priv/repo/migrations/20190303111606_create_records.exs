@@ -8,6 +8,6 @@ defmodule Discogs.Repo.Migrations.CreateRecords do
       timestamps()
     end
 
-    create unique_index(:releases, [:release_id, :disc_number])
+    create unique_index(:records, [:release_id, :disc_number])
   end
 end
