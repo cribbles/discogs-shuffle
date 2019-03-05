@@ -6,10 +6,6 @@ defmodule Discogs.Application do
 
     children = [
       Discogs.Repo,
-      # Discogs.User,
-      # Discogs.ExtractModels,
-      # Discogs.FetchJSON,
-      # Discogs.SyncModels
     ]
 
     opts = [strategy: :one_for_one, name: Discogs.Supervisor]

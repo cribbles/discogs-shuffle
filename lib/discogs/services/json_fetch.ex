@@ -1,5 +1,4 @@
 defmodule Discogs.JSONFetch do
-  alias Discogs.User
   @discogs_http_timeout_ms 15_000
   @discogs_pagination_limit 500
 

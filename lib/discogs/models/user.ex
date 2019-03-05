@@ -1,6 +1,7 @@
 defmodule Discogs.User do
   use Ecto.Schema
   import Ecto.Query, only: [from: 2]
+
   alias Discogs.Repo
   alias Discogs.User
   alias Discogs.UserRelease
