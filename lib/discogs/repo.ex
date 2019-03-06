@@ -40,7 +40,6 @@ defmodule Discogs.Repo do
     |> Discogs.User.get_or_create_by_name
     |> Discogs.JSONFetch.fetch_releases_by_user
     |> Discogs.JSONSanitize.extract_from_json
-    |> Discogs.ExtractModels.extract_release_models
-    |> Discogs.SyncModels.sync_release_models
+    |> Discogs.SyncModels.sync_models
   end
 end
