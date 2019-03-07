@@ -10,34 +10,30 @@ defmodule Discogs.Repo do
     |> process
   end
 
-  def parse_args(args) do
+  defp parse_args(args) do
     parse =
       OptionParser.parse(
         args,
-        switches: [help: :boolean],
-        aliases: [h: :help]
+        switches: [sync: :boolean],
+        aliases: [s: :sync]
       )
 
     case parse do
-      {[help: true], _, _} -> :help
-      {_, [username], _} -> {username}
+      {[sync: true], [username], _} -> {:sync, username}
+      _ -> :help
     end
   end
 
-  def process(:help) do
+  defp process(:help) do
     IO.puts("""
-      Discogs
-      -------
-      usage: discogs <user>
-      example: discogs username
+    Usage: discogs [options]
+        -s, --sync <USER>    Sync a user collection
     """)
   end
 
-  def process({username}) do
-    sync(username)
-  end
+  defp process({:sync, username}), do: sync(username)
 
-  def sync(username) do
+  defp sync(username) do
     username
     |> Discogs.User.get_or_create_by_name()
     |> Discogs.JSONFetch.fetch_releases_by_user()
