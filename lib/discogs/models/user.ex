@@ -7,6 +7,7 @@ defmodule Discogs.User do
 
   schema "users" do
     many_to_many :releases, Release, join_through: UserRelease
+    has_many :records, through: [:releases, :records]
     field :name, :string, null: false
     timestamps()
   end
