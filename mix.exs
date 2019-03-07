@@ -8,7 +8,7 @@ defmodule Discogs.MixProject do
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       escript: [main_module: Discogs.Repo],
-      deps: deps(),
+      deps: deps()
     ]
   end
 
@@ -18,9 +18,9 @@ defmodule Discogs.MixProject do
         :logger,
         :poison,
         :sqlite_ecto2,
-        :ecto,
+        :ecto
       ],
-      mod: {Discogs.Application, []},
+      mod: {Discogs.Application, []}
     ]
   end
 
@@ -29,7 +29,7 @@ defmodule Discogs.MixProject do
       {:httpoison, "~> 1.5"},
       {:poison, "~> 3.0"},
       {:sqlite_ecto2, "~> 2.2"},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 end

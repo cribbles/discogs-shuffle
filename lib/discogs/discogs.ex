@@ -1,11 +1,15 @@
 defmodule Discogs.Application do
+  @moduledoc """
+  Application entry point.
+  """
+
   use Application
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
     children = [
-      Discogs.Repo,
+      Discogs.Repo
     ]
 
     opts = [strategy: :one_for_one, name: Discogs.Supervisor]

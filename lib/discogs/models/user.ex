@@ -1,4 +1,7 @@
 defmodule Discogs.User do
+  @moduledoc """
+  Ecto struct representing a Discogs user.
+  """
   use Ecto.Schema
   alias Discogs.Repo
   alias Discogs.Release
@@ -6,9 +9,9 @@ defmodule Discogs.User do
   alias Discogs.UserRelease
 
   schema "users" do
-    many_to_many :releases, Release, join_through: UserRelease
-    has_many :records, through: [:releases, :records]
-    field :name, :string, null: false
+    many_to_many(:releases, Release, join_through: UserRelease)
+    has_many(:records, through: [:releases, :records])
+    field(:name, :string, null: false)
     timestamps()
   end
 
@@ -22,7 +25,7 @@ defmodule Discogs.User do
 
   def create_by_name(username) do
     %User{name: username}
-    |> Repo.insert
+    |> Repo.insert()
     |> elem(1)
   end
 end

@@ -1,4 +1,7 @@
 defmodule Discogs.Repo do
+  @moduledoc """
+  Repo entry point.
+  """
   use Ecto.Repo, otp_app: :discogs, adapter: Sqlite.Ecto2
 
   def main(args) do
@@ -8,11 +11,12 @@ defmodule Discogs.Repo do
   end
 
   def parse_args(args) do
-    parse = OptionParser.parse(
-      args,
-      switches: [help: :boolean],
-      aliases: [h: :help]
-    )
+    parse =
+      OptionParser.parse(
+        args,
+        switches: [help: :boolean],
+        aliases: [h: :help]
+      )
 
     case parse do
       {[help: true], _, _} -> :help
@@ -21,14 +25,12 @@ defmodule Discogs.Repo do
   end
 
   def process(:help) do
-    IO.puts(
-      """
-        Discogs
-        -------
-        usage: discogs <user>
-        example: discogs username
-      """
-    )
+    IO.puts("""
+      Discogs
+      -------
+      usage: discogs <user>
+      example: discogs username
+    """)
   end
 
   def process({username}) do
@@ -37,9 +39,9 @@ defmodule Discogs.Repo do
 
   def sync(username) do
     username
-    |> Discogs.User.get_or_create_by_name
-    |> Discogs.JSONFetch.fetch_releases_by_user
-    |> Discogs.JSONSanitize.extract_from_json
-    |> Discogs.SyncModels.sync_models
+    |> Discogs.User.get_or_create_by_name()
+    |> Discogs.JSONFetch.fetch_releases_by_user()
+    |> Discogs.JSONSanitize.extract_from_json()
+    |> Discogs.SyncModels.sync_models()
   end
 end

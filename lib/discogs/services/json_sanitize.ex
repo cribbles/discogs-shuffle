@@ -1,17 +1,23 @@
 defmodule Discogs.JSONSanitize do
+  @moduledoc """
+  Massages a JSON payload of Discogs user releases into release map objects
+  ready to be converted into Ecto structs.
+  """
+
   def extract_from_json({:ok, user, releases}) do
-    {:ok, user, get_release_models(releases)}
+    {:ok, user, get_release_maps(releases)}
   end
 
-  defp get_release_models(releases) do
+  defp get_release_maps(releases) do
     releases
     |> extract_release_fields
-    |> Map.values
+    |> Map.values()
   end
 
   defp extract_release_fields(releases) when is_list(releases) do
-    Enum.reduce(%{}, fn (release, releases) ->
+    Enum.reduce(%{}, fn release, releases ->
       id = get_in(release, ["basic_information", "id"])
+
       if is_map(releases[id]),
         do: releases,
         else: Map.put(releases, id, extract_release_fields(release, id))
@@ -23,7 +29,7 @@ defmodule Discogs.JSONSanitize do
       artists: get_artists(release),
       discogs_id: discogs_id,
       name: get_in(release, ["basic_information", "title"]),
-      records: get_records(release),
+      records: get_records(release)
     }
   end
 
@@ -45,7 +51,7 @@ defmodule Discogs.JSONSanitize do
     |> get_in(["basic_information", "formats"])
     |> Enum.at(0)
     |> get_in(["qty"])
-    |> String.to_integer
+    |> String.to_integer()
   end
 
   defp generate_records(disc_count) do
@@ -53,6 +59,6 @@ defmodule Discogs.JSONSanitize do
   end
 
   defp pick(map, values) do
-    Enum.map(map, &(Map.take(&1, values)))
+    Enum.map(map, &Map.take(&1, values))
   end
 end
