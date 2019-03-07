@@ -19,6 +19,6 @@ defmodule Discogs.SyncModels do
       :release -> %{users: [user | struct_or_changeset.users]}
       :changeset -> %{users: [user], artists: artist_models}
     end
-    Changeset.change(struct_or_changeset, change) |> Repo.insert_or_update!
+    struct_or_changeset |> Changeset.change(change) |> Repo.insert_or_update!
   end
 end

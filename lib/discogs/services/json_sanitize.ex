@@ -1,16 +1,21 @@
 defmodule Discogs.JSONSanitize do
   def extract_from_json({:ok, user, releases}) do
-    {:ok, user, extract_release_fields(releases)}
+    {:ok, user, get_release_models(releases)}
+  end
+
+  defp get_release_models(releases) do
+    releases
+    |> extract_release_fields
+    |> Map.values
   end
 
   defp extract_release_fields(releases) when is_list(releases) do
-    Enum.reduce(releases, %{}, fn (release, releases) ->
+    Enum.reduce(%{}, fn (release, releases) ->
       id = get_in(release, ["basic_information", "id"])
       if is_map(releases[id]),
         do: releases,
         else: Map.put(releases, id, extract_release_fields(release, id))
     end)
-    |> Map.values
   end
 
   defp extract_release_fields(release, discogs_id) do

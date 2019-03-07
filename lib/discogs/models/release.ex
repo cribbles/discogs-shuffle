@@ -29,6 +29,8 @@ defmodule Discogs.Release do
   end
 
   def get_by_discogs_id(discogs_id) do
-    Repo.get_by(Release, discogs_id: discogs_id) |> Repo.preload(:users)
+    Release
+    |> Repo.get_by(discogs_id: discogs_id)
+    |> Repo.preload(:users)
   end
 end

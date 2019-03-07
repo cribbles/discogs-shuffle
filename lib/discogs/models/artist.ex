@@ -20,7 +20,7 @@ defmodule Discogs.Artist do
 
     if artist = get_by_discogs_id(attrs.discogs_id),
       do: artist,
-      else: Repo.insert(changeset) |> elem(1)
+      else: changeset |> Repo.insert |> elem(1)
   end
 
   def get_by_discogs_id(discogs_id) do
