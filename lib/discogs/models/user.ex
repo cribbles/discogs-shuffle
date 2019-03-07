@@ -3,8 +3,8 @@ defmodule Discogs.User do
   Ecto struct representing a Discogs user.
   """
   use Ecto.Schema
-  alias Discogs.Repo
   alias Discogs.Release
+  alias Discogs.Repo
   alias Discogs.User
   alias Discogs.UserRelease
 

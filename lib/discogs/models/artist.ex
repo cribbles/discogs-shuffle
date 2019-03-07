@@ -3,11 +3,11 @@ defmodule Discogs.Artist do
   Ecto struct representing a Discogs artist.
   """
   use Ecto.Schema
-  alias Ecto.Changeset
   alias Discogs.Artist
   alias Discogs.ArtistRelease
   alias Discogs.Release
   alias Discogs.Repo
+  alias Ecto.Changeset
 
   schema "artists" do
     many_to_many(:releases, Release, join_through: ArtistRelease)

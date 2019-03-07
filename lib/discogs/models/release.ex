@@ -5,8 +5,8 @@ defmodule Discogs.Release do
   use Ecto.Schema
   alias Discogs.Artist
   alias Discogs.ArtistRelease
-  alias Discogs.Release
   alias Discogs.Record
+  alias Discogs.Release
   alias Discogs.Repo
   alias Discogs.User
   alias Discogs.UserRelease
