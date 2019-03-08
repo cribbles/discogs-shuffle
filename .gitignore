@@ -1,6 +1,6 @@
 _build/
 deps/
 /discogs
-discogs.sqlite3
+*.sqlite3
 *.swp
 priv/esqlite3_nif.so
