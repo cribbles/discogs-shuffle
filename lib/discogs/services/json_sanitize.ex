@@ -15,7 +15,7 @@ defmodule Discogs.JSONSanitize do
   end
 
   defp extract_release_fields(releases) when is_list(releases) do
-    Enum.reduce(%{}, fn release, releases ->
+    Enum.reduce(releases, %{}, fn release, releases ->
       id = get_in(release, ["basic_information", "id"])
 
       if is_map(releases[id]),
