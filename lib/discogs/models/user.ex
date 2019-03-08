@@ -3,6 +3,7 @@ defmodule Discogs.User do
   Ecto struct representing a Discogs user.
   """
   use Ecto.Schema
+  import Ecto.Changeset
   alias Discogs.Release
   alias Discogs.Repo
   alias Discogs.User
@@ -15,8 +16,16 @@ defmodule Discogs.User do
     timestamps()
   end
 
+  def changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:name])
+    |> cast_assoc(:releases)
+    |> validate_required(:name)
+    |> validate_length(:name, min: 1)
+  end
+
   def get_or_create_by_name(username) do
-    {:ok, get_by_name(username) || create_by_name(username)}
+    get_by_name(username) || create_by_name(username)
   end
 
   def get_by_name(username) do
@@ -24,8 +33,8 @@ defmodule Discogs.User do
   end
 
   def create_by_name(username) do
-    %User{name: username}
-    |> Repo.insert()
-    |> elem(1)
+    %User{}
+    |> User.changeset(%{name: username})
+    |> Repo.insert!()
   end
 end
