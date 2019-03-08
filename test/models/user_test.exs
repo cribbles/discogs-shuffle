@@ -1,5 +1,6 @@
 defmodule DiscogsTest.UserTest do
   alias Discogs.{Repo, User}
+  alias Ecto.Adapters.SQL.Sandbox
   use ExUnit.Case
 
   @valid_attrs %{
@@ -7,7 +8,7 @@ defmodule DiscogsTest.UserTest do
   }
 
   setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+    :ok = Sandbox.checkout(Repo)
   end
 
   describe "User.changeset/2" do
