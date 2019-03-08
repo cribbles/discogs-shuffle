@@ -17,9 +17,29 @@ defmodule DiscogsTest.UserTest do
       assert changeset.valid?
     end
 
+    test "is invalid when the params are missing" do
+      for attr <- Map.keys(@valid_attrs) do
+        missing_attrs = Map.drop(@valid_attrs, [attr])
+        changeset = User.changeset(%User{}, missing_attrs)
+        assert !changeset.valid?
+      end
+    end
+
     test "is invalid when the params are invalid" do
-      changeset = User.changeset(%User{}, %{})
+      changeset = User.changeset(%User{}, %{name: ""})
       assert !changeset.valid?
+    end
+
+    test "is invalid when the name is not unique" do
+      username = "foo"
+      attrs = Map.merge(@valid_attrs, %{name: username})
+
+      insert_with_attrs = fn ->
+        %User{} |> User.changeset(attrs) |> Repo.insert!()
+      end
+
+      insert_with_attrs.()
+      assert_raise(Sqlite.DbConnection.Error, insert_with_attrs)
     end
   end
 
@@ -38,17 +58,19 @@ defmodule DiscogsTest.UserTest do
 
     test "returns the user when there is a matching user" do
       User.create_by_name("discogs-user")
-      %User{id: id, name: name} = User.get_by_name("discogs-user")
-      assert id == 1
-      assert name == "discogs-user"
+      user = User.get_by_name("discogs-user")
+      assert %User{} = user
+      assert Ecto.get_meta(user, :state) == :loaded
+      assert user.name == "discogs-user"
     end
   end
 
   describe "User.create_by_name/1" do
     test "creates the user" do
-      %User{id: id, name: name} = User.create_by_name("discogs-user")
-      assert id == 1
-      assert name == "discogs-user"
+      user = User.create_by_name("discogs-user")
+      assert %User{} = user
+      assert Ecto.get_meta(user, :state) == :loaded
+      assert user.name == "discogs-user"
     end
 
     test "raises when the user already exists" do
