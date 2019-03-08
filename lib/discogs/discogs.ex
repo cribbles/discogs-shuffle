@@ -2,7 +2,6 @@ defmodule Discogs.Application do
   @moduledoc """
   Application entry point.
   """
-
   use Application
 
   def start(_type, _args) do
