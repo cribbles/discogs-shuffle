@@ -4,10 +4,7 @@ defmodule Discogs.User do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Discogs.Release
-  alias Discogs.Repo
-  alias Discogs.User
-  alias Discogs.UserRelease
+  alias Discogs.{Release, Repo, User, UserRelease}
 
   schema "users" do
     many_to_many(:releases, Release, join_through: UserRelease)
@@ -22,6 +19,7 @@ defmodule Discogs.User do
     |> cast_assoc(:releases)
     |> validate_required(:name)
     |> validate_length(:name, min: 1)
+    |> unique_constraint(:name)
   end
 
   def get_or_create_by_name(username) do

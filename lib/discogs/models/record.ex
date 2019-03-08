@@ -9,10 +9,22 @@ defmodule Discogs.Record do
   """
   use Ecto.Schema
   alias Discogs.Release
+  import Ecto.Changeset
 
   schema "records" do
     belongs_to(:release, Release)
     field(:disc_number, :integer, null: false)
     timestamps()
+  end
+
+  def changeset(record, params \\ %{}) do
+    record
+    |> cast(params, [:disc_number])
+    |> cast_assoc(:release)
+    |> validate_required(:disc_number)
+    |> assoc_constraint(:release)
+    |> unique_constraint(:disc_number,
+      name: :records_disc_number_release_id_index
+    )
   end
 end

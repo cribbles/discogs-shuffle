@@ -3,14 +3,17 @@ defmodule Discogs.Release do
   Ecto struct representing a Discogs release.
   """
   use Ecto.Schema
-  alias Discogs.Artist
-  alias Discogs.ArtistRelease
-  alias Discogs.Record
-  alias Discogs.Release
-  alias Discogs.Repo
-  alias Discogs.User
-  alias Discogs.UserRelease
-  alias Ecto.Changeset
+  import Ecto.Changeset
+
+  alias Discogs.{
+    Artist,
+    ArtistRelease,
+    Record,
+    Release,
+    Repo,
+    User,
+    UserRelease
+  }
 
   schema "releases" do
     has_many(:records, Record)
@@ -21,15 +24,22 @@ defmodule Discogs.Release do
     timestamps()
   end
 
-  def get_struct_or_changeset(map_with_attrs) do
-    changeset =
-      %Release{}
-      |> Changeset.change(map_with_attrs)
-      |> Changeset.unique_constraint(:discogs_id)
+  def changeset(release, params \\ %{}) do
+    release
+    |> cast(params, [:discogs_id, :name])
+    |> cast_assoc(:artists)
+    |> cast_assoc(:records)
+    |> cast_assoc(:users)
+    |> validate_required(:discogs_id)
+    |> validate_required(:name)
+    |> unique_constraint(:discogs_id)
+    |> validate_length(:name, min: 1)
+  end
 
-    if release = get_by_discogs_id(map_with_attrs.discogs_id),
+  def get_struct_or_changeset(%{discogs_id: discogs_id} = map_with_attrs) do
+    if release = get_by_discogs_id(discogs_id),
       do: {:release, release},
-      else: {:changeset, changeset}
+      else: {:changeset, changeset(%Release{}, map_with_attrs)}
   end
 
   def get_by_discogs_id(discogs_id) do
