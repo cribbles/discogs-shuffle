@@ -18,8 +18,6 @@ Usage: discogs [options]
 
 ## Tests
 
-Tests are not exhaustive.
-
 ```sh
 ./bin/test.sh
 ```
@@ -62,6 +60,13 @@ mix credo --strict
 ```
 
 before committing changes.
+
+### Testing Guidelines
+
+All public functions for the Ecto models should be tested exhaustively,
+including `changeset/2`.
+
+No need to test the schema structs.
 
 ## License
 
