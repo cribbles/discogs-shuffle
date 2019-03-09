@@ -13,7 +13,8 @@ user collections to a local Sqlite3 database.
 
 ```sh
 Usage: discogs [options]
-    -s, --sync <USER>    Sync a user collection
+    --sync USER               Sync a user collection
+    --shuffle USER <N = 30>   Pick n random records from a user collection
 ```
 
 ## Tests
@@ -65,8 +66,6 @@ before committing changes.
 
 All public functions for the Ecto models should be tested exhaustively,
 including `changeset/2`.
-
-No need to test the schema structs.
 
 ## License
 
