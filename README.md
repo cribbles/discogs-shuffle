@@ -13,8 +13,8 @@ user collections to a local Sqlite3 database.
 
 ```sh
 Usage: discogs [options]
-    --sync USER               Sync a user collection
-    --shuffle USER <N = 30>   Pick n random records from a user collection
+    --sync USER             Sync a user collection
+    --shuffle USER <N=30>   Pick n random records from a user collection
 ```
 
 ## Tests

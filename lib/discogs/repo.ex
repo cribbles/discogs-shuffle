@@ -38,8 +38,8 @@ defmodule Discogs.Repo do
   defp process(:help) do
     IO.puts("""
     Usage: discogs [options]
-        --sync USER               Sync a user collection
-        --shuffle USER <N = 30>   Pick n random records from a user collection
+        --sync USER             Sync a user collection
+        --shuffle USER <N=30>   Pick n random records from a user collection
     """)
   end
 
