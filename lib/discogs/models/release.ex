@@ -47,4 +47,14 @@ defmodule Discogs.Release do
     |> Repo.get_by(discogs_id: discogs_id)
     |> Repo.preload(:users)
   end
+
+  def format_name(%{name: release_name} = release) do
+    "#{format_artist_names(release)} - #{release_name}"
+  end
+
+  defp format_artist_names(%{artists: artists}) do
+    artists
+    |> Enum.map(& &1.name)
+    |> Enum.join(" / ")
+  end
 end

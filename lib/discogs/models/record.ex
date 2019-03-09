@@ -8,11 +8,12 @@ defmodule Discogs.Record do
   of a 2xLP set).
   """
   use Ecto.Schema
-  alias Discogs.Release
+  alias Discogs.{Record, Release}
   import Ecto.Changeset
 
   schema "records" do
     belongs_to(:release, Release)
+    has_many(:artists, through: [:release, :artists])
     field(:disc_number, :integer, null: false)
     timestamps()
   end
@@ -26,5 +27,13 @@ defmodule Discogs.Record do
     |> unique_constraint(:disc_number,
       name: :records_disc_number_release_id_index
     )
+  end
+
+  def format_name(%{disc_number: disc_number, release: release}, formatter) do
+    release_name = formatter.(release)
+
+    if length(release.records) > 1,
+      do: "#{release_name} (disc #{disc_number})",
+      else: release_name
   end
 end

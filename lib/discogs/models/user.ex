@@ -27,12 +27,15 @@ defmodule Discogs.User do
   end
 
   def get_by_name(username) do
-    Repo.get_by(User, name: username)
+    User
+    |> Repo.get_by(name: username)
+    |> Repo.preload(:records)
   end
 
   def create_by_name(username) do
     %User{}
     |> User.changeset(%{name: username})
     |> Repo.insert!()
+    |> Repo.preload(:records)
   end
 end

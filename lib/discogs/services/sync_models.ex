@@ -1,4 +1,4 @@
-defmodule Discogs.SyncModels do
+defmodule Discogs.Services.SyncModels do
   @moduledoc """
   Converts maps with release attributes into Ecto release structs, then upserts
   the structs along with their associations.
@@ -6,9 +6,7 @@ defmodule Discogs.SyncModels do
   This could be refactored to leverage something like Ecto.Multi and upsert
   associations (artists, records, user-releases) separately from the releases.
   """
-  alias Discogs.Artist
-  alias Discogs.Release
-  alias Discogs.Repo
+  alias Discogs.{Artist, Release, Repo}
   alias Ecto.Changeset
 
   def sync_models({:ok, user, releases}) do

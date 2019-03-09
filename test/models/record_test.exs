@@ -1,5 +1,5 @@
 defmodule DiscogsTest.RecordTest do
-  alias Discogs.{Record, Release, Repo}
+  alias Discogs.{Record, Repo}
   alias Ecto.Adapters.SQL.Sandbox
   use ExUnit.Case
 
@@ -44,6 +44,36 @@ defmodule DiscogsTest.RecordTest do
 
       insert_with_attrs.()
       assert_raise(Sqlite.DbConnection.Error, insert_with_attrs)
+    end
+  end
+
+  describe "Record.format_name/2" do
+    test "formats the release name" do
+      record = %{
+        disc_number: 2,
+        release: %{
+          name: "release-name",
+          records: [%Record{}]
+        }
+      }
+
+      formatter = & &1.name
+      formatted_name = Record.format_name(record, formatter)
+      assert formatted_name == "release-name"
+    end
+
+    test "adds the disc number when the release has multiple records" do
+      record = %{
+        disc_number: 2,
+        release: %{
+          name: "release-name",
+          records: [%Record{}, %Record{}, %Record{}]
+        }
+      }
+
+      formatter = & &1.name
+      formatted_name = Record.format_name(record, formatter)
+      assert formatted_name == "release-name (disc 2)"
     end
   end
 end

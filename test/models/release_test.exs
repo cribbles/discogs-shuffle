@@ -4,7 +4,7 @@ defmodule DiscogsTest.ReleaseTest do
   use ExUnit.Case
 
   @valid_attrs %{
-    name: "record-name",
+    name: "Title of Release",
     discogs_id: 15
   }
 
@@ -82,6 +82,34 @@ defmodule DiscogsTest.ReleaseTest do
       for {attr, value} <- attrs do
         assert Map.get(release, attr) == value
       end
+    end
+  end
+
+  describe "Release.format_name/2" do
+    test "formats the release name" do
+      release = %{
+        name: "Title of Release",
+        artists: [
+          %{name: "Foo"}
+        ]
+      }
+
+      formatted = Release.format_name(release)
+      assert formatted == "Foo - Title of Release"
+    end
+
+    test "joins artist names when there is more than one artist" do
+      release = %{
+        name: "Title of Release",
+        artists: [
+          %{name: "Foo"},
+          %{name: "Bar"},
+          %{name: "Quux"}
+        ]
+      }
+
+      formatted = Release.format_name(release)
+      assert formatted == "Foo / Bar / Quux - Title of Release"
     end
   end
 end

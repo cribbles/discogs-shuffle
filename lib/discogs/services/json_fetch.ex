@@ -1,4 +1,4 @@
-defmodule Discogs.JSONFetch do
+defmodule Discogs.Services.JSONFetch do
   @moduledoc """
   Fetches user releases from Discogs.
 

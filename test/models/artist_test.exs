@@ -1,6 +1,6 @@
 defmodule DiscogsTest.ArtistTest do
   alias Discogs.{Artist, Repo}
-  alias Ecto.{Adapters.SQL.Sandbox, Changeset}
+  alias Ecto.Adapters.SQL.Sandbox
   use ExUnit.Case
 
   @valid_attrs %{

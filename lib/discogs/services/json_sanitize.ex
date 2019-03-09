@@ -1,4 +1,4 @@
-defmodule Discogs.JSONSanitize do
+defmodule Discogs.Services.JSONSanitize do
   @moduledoc """
   Massages a JSON payload of Discogs user releases into release map objects
   ready to be converted into Ecto structs.
