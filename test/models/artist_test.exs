@@ -4,7 +4,7 @@ defmodule DiscogsTest.ArtistTest do
   use ExUnit.Case
 
   @valid_attrs %{
-    name: "artist-name",
+    name: "Artist Name",
     discogs_id: 15
   }
 

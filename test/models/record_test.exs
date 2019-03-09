@@ -6,7 +6,7 @@ defmodule DiscogsTest.RecordTest do
   @valid_attrs %{
     disc_number: 1,
     release: %{
-      name: "release-name",
+      name: "Title of Release",
       discogs_id: 15
     }
   }
@@ -52,28 +52,28 @@ defmodule DiscogsTest.RecordTest do
       record = %{
         disc_number: 2,
         release: %{
-          name: "release-name",
+          name: "Title of Release",
           records: [%Record{}]
         }
       }
 
       formatter = & &1.name
       formatted_name = Record.format_name(record, formatter)
-      assert formatted_name == "release-name"
+      assert formatted_name == "Title of Release"
     end
 
     test "adds the disc number when the release has multiple records" do
       record = %{
         disc_number: 2,
         release: %{
-          name: "release-name",
+          name: "Title of Release",
           records: [%Record{}, %Record{}, %Record{}]
         }
       }
 
       formatter = & &1.name
       formatted_name = Record.format_name(record, formatter)
-      assert formatted_name == "release-name (disc 2)"
+      assert formatted_name == "Title of Release (disc 2)"
     end
   end
 end
