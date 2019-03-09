@@ -29,6 +29,8 @@ defmodule Discogs.User do
   def get_by_name(username) do
     User
     |> Repo.get_by(name: username)
+    |> Repo.preload(:releases)
+    |> Repo.preload(releases: :artists)
     |> Repo.preload(:records)
   end
 
@@ -36,6 +38,8 @@ defmodule Discogs.User do
     %User{}
     |> User.changeset(%{name: username})
     |> Repo.insert!()
+    |> Repo.preload(:releases)
+    |> Repo.preload(releases: :artists)
     |> Repo.preload(:records)
   end
 end
