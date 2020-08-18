@@ -6,10 +6,14 @@ user collections to a local Sqlite3 database.
 ## Installation
 
 ```sh
-./bin/build.sh
+make build
 ```
 
 ## Usage
+
+```sh
+./discogs
+```
 
 ```sh
 Usage: discogs [options]
@@ -20,7 +24,7 @@ Usage: discogs [options]
 ## Tests
 
 ```sh
-./bin/test.sh
+make test-unit
 ```
 
 ## Notes
