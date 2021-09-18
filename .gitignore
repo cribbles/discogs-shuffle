@@ -1,6 +1,7 @@
 _build/
 deps/
+.elixir_ls/
 /discogs
 *.sqlite3
 *.swp
-priv/esqlite3_nif.so
+*.so
