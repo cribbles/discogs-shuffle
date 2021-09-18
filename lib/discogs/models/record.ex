@@ -8,7 +8,7 @@ defmodule Discogs.Record do
   of a 2xLP set).
   """
   use Ecto.Schema
-  alias Discogs.{Record, Release}
+  alias Discogs.Release
   import Ecto.Changeset
 
   schema "records" do
