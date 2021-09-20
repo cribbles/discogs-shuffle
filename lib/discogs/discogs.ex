@@ -1,6 +1,8 @@
 defmodule Discogs.Application do
   @moduledoc """
   Application entry point.
+
+  cf. https://hexdocs.pm/elixir/1.12/Application.html
   """
   use Application
 

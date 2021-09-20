@@ -1,5 +1,6 @@
-defmodule DiscogsTest.RecordTest do
-  alias Discogs.{Record, Repo}
+defmodule DiscogsTest.ModelsTest.RecordTest do
+  alias Discogs.Models.Record
+  alias Discogs.Repo
   alias Ecto.Adapters.SQL.Sandbox
   use ExUnit.Case
 
@@ -49,7 +50,7 @@ defmodule DiscogsTest.RecordTest do
 
   describe "Record.format_name/2" do
     test "formats the release name" do
-      record = %{
+      record = %Record{
         disc_number: 2,
         release: %{
           name: "Title of Release",
@@ -63,7 +64,7 @@ defmodule DiscogsTest.RecordTest do
     end
 
     test "adds the disc number when the release has multiple records" do
-      record = %{
+      record = %Record{
         disc_number: 2,
         release: %{
           name: "Title of Release",

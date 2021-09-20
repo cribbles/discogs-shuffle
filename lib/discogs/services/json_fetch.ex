@@ -1,6 +1,20 @@
 defmodule Discogs.Services.JSONFetch do
   @moduledoc """
-  Fetches user releases from Discogs.
+  Fetches release data from the Discogs API.
+  """
+  @discogs_http_timeout_ms 15_000
+  @discogs_pagination_limit 500
+
+  alias Discogs.Models.User
+
+  @typedoc "Discogs JSON API release payload properties"
+  @type release_json :: %{optional(any) => any}
+  @type success :: {:ok, [release_json]}
+  @type http_error :: {:error, status_code :: pos_integer(), body :: binary()}
+  @type result :: success | http_error
+
+  @doc """
+  Fetches a `User`'s release data from the Discogs API.
 
   If the responses are paginated, continually fetches to the last page,
   returning the stitched-up payload.
@@ -8,22 +22,18 @@ defmodule Discogs.Services.JSONFetch do
   This does not take rate limiting into account and will probably fail if
   used to fetch from a user with many thousands of releases.
   """
-  @discogs_http_timeout_ms 15_000
-  @discogs_pagination_limit 500
-
-  def fetch_releases_by_user(user) do
-    {:ok, releases} = fetch_releases_by_username(user.name)
-    {:ok, user, releases}
+  @spec fetch_releases(user :: %User{}) :: result
+  def fetch_releases(%User{name: name}) do
+    do_fetch_releases({:username, name})
   end
 
-  def fetch_releases_by_username(username) do
-    username
-    |> initial_discogs_url
-    |> fetch_releases_by_url
+  defp do_fetch_releases({:username, username}) do
+    discogs_url = initial_discogs_url(username)
+    do_fetch_releases({:url, discogs_url})
   end
 
-  def fetch_releases_by_url(discogs_url, releases \\ []) do
-    discogs_url
+  defp do_fetch_releases({:url, url}, releases \\ []) do
+    url
     |> HTTPoison.get([], recv_timeout: @discogs_http_timeout_ms)
     |> handle_json(releases)
   end
@@ -32,19 +42,14 @@ defmodule Discogs.Services.JSONFetch do
     payload = parse_json(body)
     next_url = get_in(payload, ["pagination", "urls", "next"])
     all_releases = releases ++ get_in(payload, ["releases"])
-    fetch_or_return_releases(next_url, all_releases)
+
+    if next_url,
+      do: do_fetch_releases({:url, next_url}, all_releases),
+      else: {:ok, all_releases}
   end
 
   defp handle_json({_, %{status_code: status_code, body: body}}, _) do
     {:error, status_code, body}
-  end
-
-  defp fetch_or_return_releases(url, releases) when is_bitstring(url) do
-    fetch_releases_by_url(url, releases)
-  end
-
-  defp fetch_or_return_releases(_, releases) do
-    {:ok, releases}
   end
 
   defp initial_discogs_url(username) do
@@ -55,6 +60,6 @@ defmodule Discogs.Services.JSONFetch do
   end
 
   defp parse_json(json) do
-    Poison.Parser.parse!(json, %{})
+    Poison.Decoder.decode(json, %{}) |> Poison.Parser.parse!()
   end
 end

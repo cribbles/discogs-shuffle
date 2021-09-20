@@ -1,5 +1,6 @@
-defmodule DiscogsTest.UserTest do
-  alias Discogs.{Repo, User}
+defmodule DiscogsTest.ModelsTest.UserTest do
+  alias Discogs.Models.User
+  alias Discogs.Repo
   alias Ecto.Adapters.SQL.Sandbox
   use ExUnit.Case
 

@@ -1,5 +1,6 @@
-defmodule DiscogsTest.ArtistTest do
-  alias Discogs.{Artist, Repo}
+defmodule DiscogsTest.ModelsTest.ArtistTest do
+  alias Discogs.Models.Artist
+  alias Discogs.Repo
   alias Ecto.Adapters.SQL.Sandbox
   use ExUnit.Case
 

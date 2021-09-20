@@ -1,30 +1,42 @@
 defmodule Discogs.Services.JSONSanitize do
   @moduledoc """
-  Massages a JSON payload of Discogs user releases into release map objects
-  ready to be converted into Ecto structs.
+  Massages Discogs JSON properties into attribute maps ready for use by Ecto
+  changesets.
   """
 
-  def extract_from_json({:ok, user, releases}) do
-    {:ok, user, get_release_maps(releases)}
-  end
+  @doc """
+  Extracts the relevant attributes from Discogs `Release` JSON needed create an
+  Ecto changeset with valid properties and associations.
 
-  defp get_release_maps(releases) do
-    releases
-    |> extract_release_fields
+  Includes support for associations:
+  - `Artist`
+  - `Record`
+
+  Note that this only returns the _attributes_ - not the `%Release{}` structs
+  themselves.
+  """
+  @typedoc "Discogs JSON API release payload properties"
+  @type release_json :: %{optional(any) => any}
+  @typedoc "`%Discogs.Release{}` changeset attributes"
+  @type release_attrs :: %{optional(any) => any}
+  @spec get_release_params([release_json]) :: [release_attrs]
+  def get_release_params(releases_json) do
+    releases_json
+    |> get_release_fields()
     |> Map.values()
   end
 
-  defp extract_release_fields(releases) when is_list(releases) do
+  defp get_release_fields(releases) when is_list(releases) do
     Enum.reduce(releases, %{}, fn release, releases ->
       id = get_in(release, ["basic_information", "id"])
 
       if is_map(releases[id]),
         do: releases,
-        else: Map.put(releases, id, extract_release_fields(release, id))
+        else: Map.put(releases, id, get_release_fields(release, id))
     end)
   end
 
-  defp extract_release_fields(release, discogs_id) do
+  defp get_release_fields(release, discogs_id) do
     %{
       artists: get_artists(release),
       discogs_id: discogs_id,

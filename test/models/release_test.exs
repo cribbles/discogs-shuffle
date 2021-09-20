@@ -1,5 +1,6 @@
-defmodule DiscogsTest.ReleaseTest do
-  alias Discogs.{Release, Repo}
+defmodule DiscogsTest.ModelsTest.ReleaseTest do
+  alias Discogs.Models.{Artist, Release}
+  alias Discogs.Repo
   alias Ecto.{Adapters.SQL.Sandbox, Changeset}
   use ExUnit.Case
 
@@ -87,10 +88,10 @@ defmodule DiscogsTest.ReleaseTest do
 
   describe "Release.format_name/2" do
     test "formats the release name" do
-      release = %{
+      release = %Release{
         name: "Title of Release",
         artists: [
-          %{name: "Foo"}
+          %Artist{name: "Foo"}
         ]
       }
 
@@ -99,12 +100,12 @@ defmodule DiscogsTest.ReleaseTest do
     end
 
     test "joins artist names when there is more than one artist" do
-      release = %{
+      release = %Release{
         name: "Title of Release",
         artists: [
-          %{name: "Foo"},
-          %{name: "Bar"},
-          %{name: "Quux"}
+          %Artist{name: "Foo"},
+          %Artist{name: "Bar"},
+          %Artist{name: "Quux"}
         ]
       }
 

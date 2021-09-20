@@ -1,9 +1,9 @@
-defmodule Discogs.ArtistRelease do
+defmodule Discogs.Models.ArtistRelease do
   @moduledoc """
-  Ecto struct representing a Discogs artist-to-release relationship.
+  Ecto model representing a Discogs artist-to-release relationship.
   """
   use Ecto.Schema
-  alias Discogs.{Artist, Release}
+  alias Discogs.Models.{Artist, Release}
 
   schema "artist_releases" do
     belongs_to(:artist, Artist)

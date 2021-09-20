@@ -1,7 +1,8 @@
-# discogs-shuffle
+# discogs_shuffle
 
-This is an Elixir-based CLI library that syncs [Discogs](https://discogs.com)
-user collections to a local Sqlite3 database.
+This is an Elixir library that stores [Discogs](https://discogs.com) user
+collections to a local database and allows interaction via
+[Ecto](https://github.com/elixir-ecto/ecto) wrappers.
 
 ## Installation
 
@@ -33,7 +34,7 @@ You might find this library useful if you are an Elixir developer who needs to
 work with the Discogs API in some form.
 
 It includes Ecto mappings for the Discogs `User -> Release -> Record` and
-`Artist -> Release -> Record` relationships, and could easily be extended.
+`Artist -> Release -> Record` relationships, and could be easily extended.
 
 I kept the Ecto model structs quite slim, since I originally wrote this repo for
 a fairly simple use-case (creating a shuffled sample of records to experiment
@@ -61,15 +62,39 @@ mix format
 and
 
 ```sh
-mix credo --strict
+mix credo -a --strict
 ```
 
 before committing changes.
 
-### Testing Guidelines
+### Guidelines
+
+#### Testing
 
 All public functions for the Ecto models should be tested exhaustively,
 including `changeset/2`.
+
+#### Documentation
+
+All public modules and their functions should be documented with the
+appropriate typespecs.
+
+This library uses
+[ExDoc](https://hexdocs.pm/elixir/1.12/writing-documentation.html)
+conventions for documentation. You can run
+
+```sh
+mix docs
+```
+
+to build the docs and open them in your local environment.
+
+Typespecs are validated through
+[dialyzer](https://github.com/jeremyjh/dialyxir).
+
+```sh
+mix dialyzer
+```
 
 ## License
 

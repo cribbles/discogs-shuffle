@@ -1,9 +1,9 @@
-defmodule Discogs.UserRelease do
+defmodule Discogs.Models.UserRelease do
   @moduledoc """
-  Ecto struct representing a Discogs user-to-release relationship.
+  Ecto model representing a Discogs user-to-release relationship.
   """
   use Ecto.Schema
-  alias Discogs.{Release, User}
+  alias Discogs.Models.{Release, User}
 
   schema "user_releases" do
     belongs_to(:user, User)

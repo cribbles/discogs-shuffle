@@ -1,10 +1,11 @@
-defmodule Discogs.Artist do
+defmodule Discogs.Models.Artist do
   @moduledoc """
-  Ecto struct representing a Discogs artist.
+  Ecto model representing a Discogs artist.
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Discogs.{Artist, ArtistRelease, Release, Repo}
+  alias Discogs.Models.{Artist, ArtistRelease, Release}
+  alias Discogs.Repo
 
   schema "artists" do
     many_to_many(:releases, Release, join_through: ArtistRelease)
@@ -14,6 +15,15 @@ defmodule Discogs.Artist do
     timestamps()
   end
 
+  @doc """
+  Validates the params and returns an Ecto changeset on success.
+  """
+  @type params :: %{
+          optional(:discogs_id) => pos_integer,
+          optional(:name) => String.t(),
+          optional(:releases) => [%Release{}, ...]
+        }
+  @spec changeset(%Artist{}, params) :: Ecto.Changeset.t()
   def changeset(artist, params \\ %{}) do
     artist
     |> cast(params, [:discogs_id, :name])
@@ -24,13 +34,29 @@ defmodule Discogs.Artist do
     |> validate_length(:name, min: 1)
   end
 
-  def get_or_create(%{discogs_id: discogs_id} = map_with_attrs) do
+  @doc """
+  Gets or creates the `Artist`.
+  """
+  @spec get_or_create(params) :: %Artist{}
+  def get_or_create(%{discogs_id: discogs_id} = params) do
     if artist = get_by_discogs_id(discogs_id),
       do: artist,
-      else: %Artist{} |> changeset(map_with_attrs) |> Repo.insert() |> elem(1)
+      else: create(params)
   end
 
+  @doc """
+  Gets the `Artist` by discogs id.
+  """
+  @spec get_by_discogs_id(any) :: %Artist{} | nil
   def get_by_discogs_id(discogs_id) do
     Repo.get_by(Artist, discogs_id: discogs_id)
+  end
+
+  @doc """
+  Creates the `Artist`.
+  """
+  @spec create(params) :: %Artist{}
+  def create(params) do
+    changeset(%Artist{}, params) |> Repo.insert() |> elem(1)
   end
 end

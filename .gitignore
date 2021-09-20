@@ -1,7 +1,12 @@
-_build/
-deps/
-.elixir_ls/
+/_build/
+/deps/
+/.elixir_ls/
+/doc/
+/docs/
+
 /discogs
+
 *.sqlite3
 *.swp
 *.so
+*.sqlite3-*
