@@ -7,7 +7,7 @@ defmodule Discogs.Models.Record do
   sampling of _specific records_ in a user's collection at random (for example,
   disc 2 of a 2xLP set).
 
-  See `Discogs.CLI.shuffle_collection/2` for example usage.
+  See `Discogs.Tasks.shuffle_collection/2` for example usage.
   """
   use Ecto.Schema
   alias Discogs.Models.{Record, Release}
